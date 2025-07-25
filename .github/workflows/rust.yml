@@ -21,4 +21,5 @@ jobs:
       run: rustc --version
     - name: Run tests
       run: cargo --version
+    - name: check rustup
       run: rustup --version
