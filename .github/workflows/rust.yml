@@ -18,8 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: rustc --version
+      run: cargo build --release
     - name: Run tests
-      run: cargo --version
-    - name: check rustup
-      run: rustup --version
+      run: cargo clippy --verbose
+    - name: fix using clippy 
+      run: cargo clippy --fix -Z unstable-options
