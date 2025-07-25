@@ -19,8 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            keytool
-          sparse-checkout-cone-mode: false
+           keytool
 
       - name: Run Clippy with warnings as errors
         run: cargo clippy --all-targets --all-features -- -D warnings
