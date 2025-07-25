@@ -17,9 +17,8 @@ jobs:
     steps:
       - name: Checkout only keytool folder
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-           keytool
+      - name: Set Directory
+        run: cd keytool
 
       - name: Run Clippy with warnings as errors
         run: cargo clippy --all-targets --all-features -- -D warnings
