@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 env:
@@ -12,14 +12,30 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --release
-    - name: Run tests
-      run: cargo clippy --verbose
-    - name: fix using clippy 
-      run: cargo clippy --fix -Z unstable-options
+      - name: Checkout only keytool folder
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            keytool
+          sparse-checkout-cone-mode: false
+
+      - name: Run Clippy with warnings as errors
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Auto-fix Clippy warnings
+        run: cargo clippy --fix -Z unstable-options --allow-dirty --allow-staged
+
+      - name: Run tests
+        run: cargo test --all
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Upload keytool artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: keytool-folder
+          path: keytool/
